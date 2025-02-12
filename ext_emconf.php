@@ -17,12 +17,9 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Regis TEDONE',
     'author_email' => 'regis.tedone@gmail.com',
     'state' => 'stable',
-    'uploadfolder' => 0,
-    'createDirs' => '',
-    'clearCacheOnLoad' => 0,
     'version' => '4.1.3',
     'constraints' => [
-        'depends' => [ 'typo3' => '8.7.32-11.5.99' ],
+        'depends' => [ 'typo3' => '12.4.0-12.4.99' ],
         'conflicts' => [],
         'suggests' => [
 	        'tt_address' => '4.0.0-5.99.99',

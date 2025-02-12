@@ -1,11 +1,12 @@
 <?php
+defined('TYPO3') || die();
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rtsimpleosm_domain_model_osm',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'versioningWS' => true,
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
@@ -17,10 +18,10 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'title,address,latitude,longitude',
+        'security' => [
+            'ignorePageTypeRestriction' => true
+        ],
         'iconfile' => 'EXT:rt_simpleosm/Resources/Public/Icons/tx_rtsimpleosm_domain_model_osm.png'
-    ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, address, latitude, longitude, markericon',
     ],
     'types' => [
         '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, address, helper, latitude, longitude, markericon, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
@@ -29,30 +30,17 @@ return [
         'sys_language_uid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.language',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'special' => 'languages',
-                'items' => [
-                    [
-                        'LLL:EXT:lang/locallang_general.xlf:LGL.allLanguages',
-                        -1,
-                        'flags-multiple'
-                    ]
-                ],
-                'default' => 0,
-            ],
+            'config' => ['type' => 'language'],
         ],
         'l10n_parent' => [
             'displayCond' => 'FIELD:sys_language_uid:>:0',
-            'exclude' => true,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.l18n_parent',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'default' => 0,
                 'items' => [
-                    ['', 0],
+                    ['label' => '', 'value' => 0],
                 ],
                 'foreign_table' => 'tx_rtsimpleosm_domain_model_osm',
                 'foreign_table_where' => 'AND tx_rtsimpleosm_domain_model_osm.pid=###CURRENT_PID### AND tx_rtsimpleosm_domain_model_osm.sys_language_uid IN (-1,0)',
@@ -78,7 +66,7 @@ return [
                 'type' => 'check',
                 'items' => [
                     '1' => [
-                        '0' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'
+                        'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'
                     ]
                 ],
             ],
@@ -90,10 +78,8 @@ return [
             ],
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 13,
-                'eval' => 'datetime',
                 'default' => 0,
             ],
         ],
@@ -104,10 +90,8 @@ return [
             ],
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 13,
-                'eval' => 'datetime',
                 'default' => 0,
                 'range' => [
                     'upper' => mktime(0, 0, 0, 1, 1, 2038)
@@ -121,7 +105,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required'
+                'eval' => 'trim',
+                'required' => true
             ],
         ],
         'address' => [
@@ -150,7 +135,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required'
+                'eval' => 'trim',
+                'required' => true
             ],
         ],
         'longitude' => [
@@ -159,7 +145,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required'
+                'eval' => 'trim',
+                'required' => true
             ],
         ],
 	    'markericon' => [
@@ -169,25 +156,120 @@ return [
 		        'type' => 'select',
 		        'renderType' => 'selectSingle',
 			    'items' => [
-			    	['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.0',   0,  'EXT:rt_simpleosm/Resources/Public/Icons/marker-icon.png',         'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.1',   1,  'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-black.svg',    'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.2',   2,  'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-blue.svg',     'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.3',   3,  'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-deepblue.svg', 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.4',   4,  'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-green.svg',    'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.5',   5,  'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-fuchsia.svg',  'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.6',   6,  'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-orange.svg',   'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.7',   7,  'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-purple.svg',   'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.8',   8,  'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-red.svg',      'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.9',   9,  'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-yellow.svg',   'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.10',  10, 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-black.svg',       'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.11',  11, 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-blue.svg',        'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.12',  12, 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-deepblue.svg',    'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.13',  13, 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-green.svg',       'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.14',  14, 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-fuchsia.svg',     'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.15',  15, 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-orange.svg',      'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.16',  16, 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-purple.svg',      'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.17',  17, 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-red.svg',         'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'],
-				    ['LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.18',  18, 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-yellow.svg',      'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg']
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.0',
+                        'value' => 0,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-icon.png',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.1',
+                        'value' => 1,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-black.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.2',
+                        'value' => 2,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-blue.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.3',
+                        'value' => 3,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-deepblue.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.4',
+                        'value' => 4,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-green.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.5',
+                        'value' => 5,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-fuchsia.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.6',
+                        'value' => 6,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-orange.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.7',
+                        'value' => 7,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-purple.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.8',
+                        'value' => 8,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-red.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.9',
+                        'value' => 9,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-marker-yellow.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/marker-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.10',
+                        'value' => 10,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-black.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.11',
+                        'value' => 11,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-blue.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.12',
+                        'value' => 12,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-deepblue.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.13',
+                        'value' => 13,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-green.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.14',
+                        'value' => 14,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-fuchsia.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.15',
+                        'value' => 15,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-orange.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.16',
+                        'value' => 16,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-purple.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.17',
+                        'value' => 17,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-red.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
+                    ],
+                    [
+                        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.markerIcon.18',
+                        'value' => 18,
+                        'icon' => 'EXT:rt_simpleosm/Resources/Public/Icons/map-pin-yellow.svg',
+                        'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
+                    ]
 			    ],
 			    'showIconTable' => 1,
 			    'fieldWizard' => [

@@ -1,9 +1,9 @@
 <?php
-defined('TYPO3_MODE') || die();
+defined('TYPO3') || die();
 
 // Register plugin
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-	'SYRADEV.RtSimpleosm',
+	'RtSimpleosm',
 	'Sosm',
 	'Simple OSM'
 );

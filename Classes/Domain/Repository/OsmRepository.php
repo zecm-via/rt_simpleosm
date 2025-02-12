@@ -52,26 +52,14 @@ class OsmRepository extends Repository {
 		
 		$selectedTtAddressMarkers = [];
 
-		if ( version_compare( TYPO3_version, '8.0', '<' ) ) {
-			// Database connection
-			global $TYPO3_DB;
-			$fields       = "`uid`,``name`,`latitude`,`longitude`,`address`,`zip`,`city`,`country`,`markericon`";
-			$where_clause = "`uid` IN (" . join( ', ', $ttAddressUids ) . ")";
-			$selectedTtAddressMarkers  = $TYPO3_DB->exec_SELECTgetRows( $fields, $this->ttAddress_table, $where_clause );
-		} elseif ( version_compare( TYPO3_version, '8.0', '>=' ) ) {
-			// Database connection
-			$connectionPool   = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class );
-			$ttAddressQueryBuilder = $connectionPool->getQueryBuilderForTable( $this->ttAddress_table );
-			// Get OSM infos
-			$selectedTtAddressMarkers = $ttAddressQueryBuilder
-				->select( 'uid', 'name', 'latitude', 'longitude', 'address', 'zip','city','country','markericon' )
-				->from( $this->ttAddress_table )
-				->where(
-					$ttAddressQueryBuilder->expr()->in( 'uid', $ttAddressQueryBuilder->createNamedParameter( $ttAddressUids, \TYPO3\CMS\Core\Database\Connection::PARAM_INT_ARRAY ) )
-				)
-				->execute()
-				->fetchAll();
-		}
+
+        // Database connection
+        $connectionPool   = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class );
+        $ttAddressQueryBuilder = $connectionPool->getQueryBuilderForTable( $this->ttAddress_table );
+        // Get OSM infos
+        $selectedTtAddressMarkers = $ttAddressQueryBuilder
+            ->select( 'uid', 'name', 'latitude', 'longitude', 'address', 'zip','city','country','markericon' )
+            ->from( $this->ttAddress_table )->where($ttAddressQueryBuilder->expr()->in( 'uid', $ttAddressQueryBuilder->createNamedParameter( $ttAddressUids, \TYPO3\CMS\Core\Database\Connection::PARAM_INT_ARRAY ) ))->executeQuery()->fetchAllAssociative();
 
 		// Convert tt_address to OSM
 		$OsmTtAddresses = [];

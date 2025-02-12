@@ -20,9 +20,9 @@ class RtCopyrigthsLogo extends AbstractFormElement {
 		$formField = '<div class="callout callout-warning">';
 		$formField .= '<div class="media"><div class="media-left"><img src="/typo3conf/ext/rt_simpleosm/Resources/Public/syradev.png" alt="SYRADEV"></div>';
 		$formField .= '<div class="media-body"><h4 class="callout-title">';
-		$formField .= \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_be.xlf:about.SYRADEV.title', 'rt_simpleosm' );
+		$formField .= \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_be.xlf:about.SYRADEV.title', 'RtSimpleosm' );
 		$formField .= '</h4><div class="callout-body">';
-		$formField .= \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_be.xlf:about.SYRADEV.text', 'rt_simpleosm' );
+		$formField .= \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_be.xlf:about.SYRADEV.text', 'RtSimpleosm' );
 		$formField .= '</div></div></div></div>';
 
         $result = $this->initializeResultArray();

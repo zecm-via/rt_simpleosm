@@ -77,7 +77,7 @@ class Osm extends AbstractEntity {
 	 *
 	 * @return void
 	 */
-	public function setTitle( $title ) {
+	public function setTitle( $title ): void {
 		$this->title = $title;
 	}
 
@@ -97,7 +97,7 @@ class Osm extends AbstractEntity {
 	 *
 	 * @return void
 	 */
-	public function setLatitude( $latitude ) {
+	public function setLatitude( $latitude ): void {
 		$this->latitude = $latitude;
 	}
 
@@ -117,7 +117,7 @@ class Osm extends AbstractEntity {
 	 *
 	 * @return void
 	 */
-	public function setLongitude( $longitude ) {
+	public function setLongitude( $longitude ): void {
 		$this->longitude = $longitude;
 	}
 
@@ -137,7 +137,7 @@ class Osm extends AbstractEntity {
 	 *
 	 * @return void
 	 */
-	public function setAddress( $address ) {
+	public function setAddress( $address ): void {
 		$this->address = $address;
 	}
 
@@ -148,7 +148,7 @@ class Osm extends AbstractEntity {
 	 *
 	 * @return void
 	 */
-	public function setUid( $uid ) {
+	public function setUid( $uid ): void {
 		$this->uid = $uid;
 	}
 	
@@ -168,7 +168,7 @@ class Osm extends AbstractEntity {
 	 *
 	 * @return void
 	 */
-	public function setMarkericon( $markericon ) {
+	public function setMarkericon( $markericon ): void {
 		$this->markericon = $markericon;
 	}
 
@@ -188,7 +188,7 @@ class Osm extends AbstractEntity {
 	 *
 	 * @return void
 	 */
-	public function setMapmarkeruid( $mapmarkeruid ) {
+	public function setMapmarkeruid( $mapmarkeruid ): void {
 		$this->mapmarkeruid = $mapmarkeruid;
 	}
 }

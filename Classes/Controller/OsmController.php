@@ -39,12 +39,8 @@ class OsmController extends ActionController {
 	 */
 	protected $osmRepository;
 
-	/**
-	 * Osm Repository injector
-	 *
-	 * @param OsmRepository $osmRepository
-	 */
-	public function injectOsmRepository( OsmRepository $osmRepository ) {
+	public function __construct(OsmRepository $osmRepository)
+	{
 		$this->osmRepository = $osmRepository;
 	}
 
@@ -53,11 +49,11 @@ class OsmController extends ActionController {
 	 *
 	 * @return void
 	 */
-	public function displayMapAction() {
+	public function displayMapAction(): \Psr\Http\Message\ResponseInterface {
 		
 		// Skip rendering of the map if settings are not provided
 		if (empty($this->settings)) {
-			return;
+			return $this->htmlResponse(null);
 		}
 
 		//Get Flexform data
@@ -74,7 +70,7 @@ class OsmController extends ActionController {
 		$popupOptions            = (int) $this->settings['PopupOptions'];
 
 		// Get current event plugin uid
-		$cObj = $this->configurationManager->getContentObject();
+		$cObj = $this->request->getAttribute('currentContentObject');
 		$cUid = $cObj->data['uid'];
 
 		// Initiate the page renderer
@@ -241,12 +237,7 @@ class OsmController extends ActionController {
 			';
 
 			// Get extension configuration
-			$extConf = '';
-			if ( version_compare( TYPO3_version, '9.0', '<' ) ) {
-				$extConf = unserialize( $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rt_simpleosm'] );
-			} elseif ( version_compare( TYPO3_version, '9.0', '>=' ) ) {
-				$extConf = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class )->get( 'rt_simpleosm' );
-			}
+			$extConf = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class )->get( 'rt_simpleosm' );
 
 			// Inject leaflet CSS
 			if ( $extConf['useCdn'] === '1' ) {
@@ -399,7 +390,7 @@ class OsmController extends ActionController {
 			// Zoom control options
 			if ( $displayZoomButtons === '1' ) {
 				$leafletScript .= '
-			         window[\'zoomOptions_' . $cUid . '\'] = { zoomInTitle: \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.zoomIn', 'rt_simpleosm' ) . '\', zoomOutTitle: \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.zoomOut', 'rt_simpleosm' ) . '\', position:\'topleft\' };
+			         window[\'zoomOptions_' . $cUid . '\'] = { zoomInTitle: \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.zoomIn', 'RtSimpleosm' ) . '\', zoomOutTitle: \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.zoomOut', 'RtSimpleosm' ) . '\', position:\'topleft\' };
 			         L.control.zoom(window[\'zoomOptions_' . $cUid . '\']).addTo(window[\'map_' . $cUid . '\']);
 			     ';
 			}
@@ -445,8 +436,8 @@ class OsmController extends ActionController {
 				$leafletScript .= '
 					window[\'map_' . $cUid . '\'].addControl(new L.Control.Fullscreen({
 	                    title: {
-	                        \'false\': \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.viewFullscreen', 'rt_simpleosm' ) . '\',
-	                        \'true\': \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.exitFullscreen', 'rt_simpleosm' ) . '\'
+	                        \'false\': \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.viewFullscreen', 'RtSimpleosm' ) . '\',
+	                        \'true\': \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.exitFullscreen', 'RtSimpleosm' ) . '\'
 	                    }
 					}));
 				';
@@ -496,6 +487,7 @@ class OsmController extends ActionController {
 			);
 			$this->view->assign( 'noValidMapRecordSelected', true );
 		}
+        return $this->htmlResponse();
 	}
 
 	/**
