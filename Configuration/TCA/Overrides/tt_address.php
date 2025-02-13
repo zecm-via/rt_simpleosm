@@ -132,7 +132,6 @@ if(ExtensionManagementUtility::isLoaded('tt_address')) {
                         'group' => 'EXT:rt_simpleosm/Resources/Public/Icons/pin-shadow.svg'
                     ]
                 ],
-				'showIconTable' => 1,
 				'fieldWizard' => [
 					'selectIcons' => [
 						'disabled' => 0

@@ -113,7 +113,6 @@
 									<icon>EXT:rt_simpleosm/Resources/Public/maps/map_14.png</icon>
 								</numIndex>
 							</items>
-							<showIconTable>1</showIconTable>
 							<fieldWizard>
 								<selectIcons>
 									<disabled>0</disabled>
