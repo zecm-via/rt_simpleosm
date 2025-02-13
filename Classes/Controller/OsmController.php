@@ -14,6 +14,8 @@ namespace SYRADEV\RtSimpleosm\Controller;
  ***/
 
 use SYRADEV\RtSimpleosm\Domain\Model\Osm;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,7 +52,6 @@ class OsmController extends ActionController {
 	 * @return void
 	 */
 	public function displayMapAction(): \Psr\Http\Message\ResponseInterface {
-		
 		// Skip rendering of the map if settings are not provided
 		if (empty($this->settings)) {
 			return $this->htmlResponse(null);
@@ -83,7 +84,7 @@ class OsmController extends ActionController {
 		$markersOsm = array_map( array( $this->osmRepository, "findByUid" ), $mapRecords[1] );
 
 		$markersTtAddress = [];
-		if(isset($GLOBALS['TYPO3_LOADED_EXT']['tt_address'])) {
+		if(ExtensionManagementUtility::isLoaded('tt_address')) {
 			// Get tt_address records IDs
 			preg_match_all( '/tt_address_(\d+),?/', $this->settings['MapRecord'], $ttAddressRecords );
 			// Get all tt_address Objects with those IDs and convert them to Osm objects
@@ -228,7 +229,7 @@ class OsmController extends ActionController {
 			}
 
 			$mapConf = '{
-	            zoomControl: false,   
+	            zoomControl: false,
 	            minZoom: ' . $minZoom . ',
 	            maxZoom: ' . $maxZoom . ',
 	            animate: true,
@@ -237,7 +238,7 @@ class OsmController extends ActionController {
 			';
 
 			// Get extension configuration
-			$extConf = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class )->get( 'rt_simpleosm' );
+			$extConf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('rt_simpleosm');
 
 			// Inject leaflet CSS
 			if ( $extConf['useCdn'] === '1' ) {
@@ -253,7 +254,7 @@ class OsmController extends ActionController {
 				);
 			} else {
 				$this->pageRenderer->addCssLibrary(
-					'/typo3conf/ext/rt_simpleosm/Resources/Public/Css/leaflet.min.css',
+					'EXT:rt_simpleosm/Resources/Public/Css/leaflet.min.css',
 					'stylesheet',
 					'all',
 					'LeafletCss', /* title */
@@ -322,7 +323,7 @@ class OsmController extends ActionController {
 			} else {
 				$this->pageRenderer->addJsFooterLibrary(
 					'leafletJS', /* name */
-					'/typo3conf/ext/rt_simpleosm/Resources/Public/JavaScript/leaflet.min.js',
+					'EXT:rt_simpleosm/Resources/Public/JavaScript/leaflet.min.js',
 					'text/javascript', /* type */
 					true, /* compress*/
 					true, /* force on top */
@@ -346,7 +347,7 @@ class OsmController extends ActionController {
 				} else {
 					$this->pageRenderer->addJsFooterLibrary(
 						'leafletFullscreenJS',  /* name */
-						'/typo3conf/ext/rt_simpleosm/Resources/Public/JavaScript/Leaflet.fullscreen.min.js',
+						'EXT:rt_simpleosm/Resources/Public/JavaScript/Leaflet.fullscreen.min.js',
 						'text/javascript', /* type */
 						true, /* compress*/
 						false, /* force on top */
@@ -371,7 +372,7 @@ class OsmController extends ActionController {
 				} else {
 					$this->pageRenderer->addJsFooterLibrary(
 						'leafletMiniMapJS',  /* name */
-						'/typo3conf/ext/rt_simpleosm/Resources/Public/JavaScript/Control.MiniMap.min.js',
+						'EXT:rt_simpleosm/Resources/Public/JavaScript/Control.MiniMap.min.js',
 						'text/javascript', /* type */
 						true, /* compress*/
 						false, /* force on top */
@@ -390,7 +391,7 @@ class OsmController extends ActionController {
 			// Zoom control options
 			if ( $displayZoomButtons === '1' ) {
 				$leafletScript .= '
-			         window[\'zoomOptions_' . $cUid . '\'] = { zoomInTitle: \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.zoomIn', 'RtSimpleosm' ) . '\', zoomOutTitle: \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.zoomOut', 'RtSimpleosm' ) . '\', position:\'topleft\' };
+			         window[\'zoomOptions_' . $cUid . '\'] = { zoomInTitle: \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.zoomIn') . '\', zoomOutTitle: \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.zoomOut') . '\', position:\'topleft\' };
 			         L.control.zoom(window[\'zoomOptions_' . $cUid . '\']).addTo(window[\'map_' . $cUid . '\']);
 			     ';
 			}
@@ -414,7 +415,7 @@ class OsmController extends ActionController {
 				let markers_' . $cUid . '_data = [' . join( ',', $markers_data ) . '], group_' . $cUid . ' = new L.featureGroup([]), marker_' . $cUid . ', i_' . $cUid . '=0;
 				window[\'mapMarkers_' . $cUid . '\'] = [];
 				while (marker_' . $cUid . ' = markers_' . $cUid . '_data[i_' . $cUid . '++]) {
-					let LeafIcon = L.Icon.extend({ options: { shadowUrl: marker_' . $cUid . '.shadow, iconSize: [25, 41], shadowSize: [60, 74], iconAnchor: [12, 41], shadowAnchor: [31, 51], popupAnchor: [0, -40] } });				
+					let LeafIcon = L.Icon.extend({ options: { shadowUrl: marker_' . $cUid . '.shadow, iconSize: [25, 41], shadowSize: [60, 74], iconAnchor: [12, 41], shadowAnchor: [31, 51], popupAnchor: [0, -40] } });
 					let customMarker = new LeafIcon({iconUrl: marker_' . $cUid . '.icon});
 					let mapMarker = new L.marker(marker_' . $cUid . '.latlng, {icon: customMarker});
 					mapMarker' . ( ( $popupOptions > 1 ) ? '.bindPopup(marker_' . $cUid . '.popup)' : '' ) . ';
@@ -430,14 +431,14 @@ class OsmController extends ActionController {
 					let miniMap_' . $cUid . ' = new L.Control.MiniMap(osm2_' . $cUid . ', {toggleDisplay: true}).addTo(window[\'map_' . $cUid . '\']);
 				';
 			}
-			
+
 			// Add full screen button
 			if ( $displayFullScreenButton === '1' ) {
 				$leafletScript .= '
 					window[\'map_' . $cUid . '\'].addControl(new L.Control.Fullscreen({
 	                    title: {
-	                        \'false\': \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.viewFullscreen', 'RtSimpleosm' ) . '\',
-	                        \'true\': \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.exitFullscreen', 'RtSimpleosm' ) . '\'
+	                        \'false\': \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.viewFullscreen') . '\',
+	                        \'true\': \'' . LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.exitFullscreen') . '\'
 	                    }
 					}));
 				';
@@ -457,11 +458,11 @@ class OsmController extends ActionController {
 				';
 				$markersMenuItems = [];
 				foreach ($markers as $markerMenuItem) {
-					array_push($markersMenuItems, [
-						'muid'   => $markerMenuItem->getMapmarkeruid(),
-						'icon'  => PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$markerMenuItem->getMarkericon()][2])),
-						'title' => $markerMenuItem->getTitle()
-					]);
+					$markersMenuItems[] = [
+                        'muid' => $markerMenuItem->getMapmarkeruid(),
+                        'icon' => PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$markerMenuItem->getMarkericon()][2])),
+                        'title' => $markerMenuItem->getTitle()
+                    ];
 				}
 				$this->view->assignMultiple( [
 					'displayCaptionMenu' => $displayCaptionMenu,
@@ -473,10 +474,10 @@ class OsmController extends ActionController {
 			// Renders map leaflet script
 			$this->pageRenderer->addJsFooterInlineCode( 'leafletScript_' . $cUid, $leafletScript, true );
 			$this->view->assign( 'cUid', $cUid );
-			
+
 		} else {
 			$this->pageRenderer->addCssLibrary(
-				'/typo3conf/ext/rt_simpleosm/Resources/Public/Css/osmalert.css',
+				'EXT:rt_simpleosm/Resources/Public/Css/osmalert.css',
 				'stylesheet',
 				'all',
 				'OsmAlert', /* title */

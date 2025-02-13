@@ -59,7 +59,7 @@ class OsmRepository extends Repository {
         // Get OSM infos
         $selectedTtAddressMarkers = $ttAddressQueryBuilder
             ->select( 'uid', 'name', 'latitude', 'longitude', 'address', 'zip','city','country','markericon' )
-            ->from( $this->ttAddress_table )->where($ttAddressQueryBuilder->expr()->in( 'uid', $ttAddressQueryBuilder->createNamedParameter( $ttAddressUids, \TYPO3\CMS\Core\Database\Connection::PARAM_INT_ARRAY ) ))->executeQuery()->fetchAllAssociative();
+            ->from( $this->ttAddress_table )->where($ttAddressQueryBuilder->expr()->in( 'uid', $ttAddressQueryBuilder->createNamedParameter( $ttAddressUids, \Doctrine\DBAL\ArrayParameterType::INTEGER ) ))->executeQuery()->fetchAllAssociative();
 
 		// Convert tt_address to OSM
 		$OsmTtAddresses = [];
