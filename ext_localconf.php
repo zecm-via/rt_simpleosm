@@ -18,27 +18,6 @@ ExtensionUtility::configurePlugin(
     ]
 );
 
-// wizards
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-    'mod {
-	            wizards.newContentElement.wizardItems.plugins {
-	                elements {
-	                    sosm {
-	                        iconIdentifier = rt_simpleosm-plugin-sosm
-	                        title = LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.name
-	                        description = LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.description
-	                        tt_content_defValues {
-	                            CType = list
-	                            list_type = rtsimpleosm_sosm
-	                        }
-	                    }
-	                }
-	                show = *
-	            }
-	       }'
-);
-
-
 // Page module hook for backend plugin display
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['Rtsimpleosm'] = 'SYRADEV\RtSimpleosm\Hooks\PageLayoutViewDrawItemHook';
 
