@@ -1,7 +1,11 @@
 <?php
+declare(strict_types=1);
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3') || die();
 
-if(isset($GLOBALS['TYPO3_LOADED_EXT']['tt_address'])) {
+if(ExtensionManagementUtility::isLoaded('tt_address')) {
 	/**
 	 * TCA additional column for tt_address
 	 */
@@ -139,6 +143,6 @@ if(isset($GLOBALS['TYPO3_LOADED_EXT']['tt_address'])) {
 		]
 	];
 
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_address',$tempColumns);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('tt_address','markericon;;;;1-1-1','', 'after:longitude');
+	ExtensionManagementUtility::addTCAcolumns('tt_address', $tempColumns);
+	ExtensionManagementUtility::addToAllTCAtypes('tt_address', 'markericon;;;;1-1-1', '',  'after:longitude');
 }
