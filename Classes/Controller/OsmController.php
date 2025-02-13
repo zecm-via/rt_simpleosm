@@ -268,12 +268,12 @@ class OsmController extends ActionController {
 			// Inject OSM fullscreen plugin CSS
 			if ( $displayFullScreenButton === '1' ) {
 				if ( $extConf['useCdn'] === '1' ) {
-					$this->pageRenderer->addFooterData(
-						'<link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" />'
+					$this->pageRenderer->addCssFile(
+						'https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css'
 					);
 				} else {
-					$this->pageRenderer->addFooterData(
-						'<link rel="stylesheet" href="/typo3conf/ext/rt_simpleosm/Resources/Public/Css/leaflet.fullscreen.min.css" />'
+					$this->pageRenderer->addCssFile(
+                        'EXT:rt_simpleosm/Resources/Public/Css/leaflet.fullscreen.min.css'
 					);
 				}
 			}
@@ -281,21 +281,19 @@ class OsmController extends ActionController {
 			// Inject leaflet MiniMap CSS
 			if($displayMiniMap === '1') {
 				if ( $extConf['useCdn'] === '1' ) {
-					$this->pageRenderer->addFooterData(
-						'<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.css" />'
+					$this->pageRenderer->addCssFile(
+						'https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.min.css'
 					);
 				} else {
-					$this->pageRenderer->addFooterData(
-						'<link rel="stylesheet" href="/typo3conf/ext/rt_simpleosm/Resources/Public/Css/Control.MiniMap.min.css" />'
+					$this->pageRenderer->addCssFile(
+                        'EXT:rt_simpleosm/Resources/Public/Css/Control.MiniMap.min.css'
 					);
 				}
 			}
 
 			// Inject External Caption Menu CSS
 			if ( $displayCaptionMenu === '1' ) {
-				$this->pageRenderer->addFooterData(
-					'<link rel="stylesheet" href="/typo3conf/ext/rt_simpleosm/Resources/Public/Css/captionmenu.css" />'
-				);
+				$this->pageRenderer->addCssFile('EXT:rt_simpleosm/Resources/Public/Css/captionmenu.css');
 			}
 
 			// Inject map css
