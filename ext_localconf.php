@@ -38,13 +38,6 @@ ExtensionUtility::configurePlugin(
 	       }'
 );
 
-$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
-
-$iconRegistry->registerIcon(
-    'rt_simpleosm-plugin-sosm',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    ['source' => 'EXT:rt_simpleosm/Resources/Public/Icons/user_plugin_sosm.svg']
-);
 
 // Page module hook for backend plugin display
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['Rtsimpleosm'] = 'SYRADEV\RtSimpleosm\Hooks\PageLayoutViewDrawItemHook';
