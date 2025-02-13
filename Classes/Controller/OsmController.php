@@ -407,8 +407,8 @@ class OsmController extends ActionController {
 			$markers_data = array_map( function( Osm $map ) {
 				return '{   latlng: ['   . $map->getLatitude() . ',' . $map->getLongitude() . '], '.
 				            'popup: \''  . addslashes( $this->getPopupContent($map) ) . '\',' .
-				            'icon: \''   . PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$map->getMarkericon()][2])) . '\',' .
-				            'shadow: \'' . PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$map->getMarkericon()][3])) . '\'' .
+				            'icon: \''   . PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$map->getMarkericon()]['icon'])) . '\',' .
+				            'shadow: \'' . PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$map->getMarkericon()]['group'])) . '\'' .
 				       ' }';
 			}, $markers );
 			$leafletScript .= '
@@ -460,7 +460,7 @@ class OsmController extends ActionController {
 				foreach ($markers as $markerMenuItem) {
 					$markersMenuItems[] = [
                         'muid' => $markerMenuItem->getMapmarkeruid(),
-                        'icon' => PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$markerMenuItem->getMarkericon()][2])),
+                        'icon' => PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$markerMenuItem->getMarkericon()]['icon'])),
                         'title' => $markerMenuItem->getTitle()
                     ];
 				}
