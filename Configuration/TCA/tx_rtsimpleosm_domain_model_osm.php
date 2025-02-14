@@ -124,7 +124,7 @@ return [
         'helper' => [
 	        'label' => 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_be.xlf:simpleosm.message.getLatLong.title',
 	        'config' => [
-		        'type' => 'user',
+		        'type' => 'none',
                 'renderType' => 'rtGPSCoordinates',
 		        'parameters' => [
 			        'color' => '#9ed284'
