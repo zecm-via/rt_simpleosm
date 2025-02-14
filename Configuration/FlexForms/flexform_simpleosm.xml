@@ -171,11 +171,18 @@
 						<exclude>0</exclude>
 						<label>LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.zoom</label>
 						<config>
-							<type>input</type>
+							<type>number</type>
+							<format>integer</format>
+							<slider>
+								<step>1</step>
+							</slider>
+							<range>
+								<lower>1</lower>
+								<upper>18</upper>
+							</range>
 							<size>10</size>
-							<eval>num</eval>
 							<default>16</default>
-							<eval>required</eval>
+							<required>true</required>
 						</config>
 					</settings.Zoom>
 
