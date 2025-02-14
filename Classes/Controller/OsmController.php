@@ -302,7 +302,7 @@ class OsmController extends ActionController {
 		        #map_' . $cUid . ' {
 		            width: ' . $mapWidth . ';
 					height: ' . $mapHeight . ';
-					border-radius: ' . $borderRadiusMap . ';
+					border-radius: ' . (int) $borderRadiusMap . 'px;
 				}
 			';
 

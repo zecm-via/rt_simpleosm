@@ -12,7 +12,6 @@
 						<label>LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.mapRecord</label>
 						<config>
 							<type>group</type>
-							<internal_type>db</internal_type>
 							<allowed>tx_rtsimpleosm_domain_model_osm</allowed>
 							<size>10</size>
 							<minitems>1</minitems>
@@ -131,7 +130,7 @@
 							<type>input</type>
 							<size>10</size>
 							<default>100%</default>
-							<eval>required</eval>
+							<required>true</required>
 						</config>
 					</settings.MapWidth>
 
@@ -142,7 +141,7 @@
 							<type>input</type>
 							<size>10</size>
 							<default>400px</default>
-							<eval>required</eval>
+							<required>true</required>
 						</config>
 					</settings.MapHeight>
 
@@ -150,11 +149,11 @@
 						<exclude>0</exclude>
 						<label>LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.borderRadiusMap</label>
 						<config>
-							<type>input</type>
+							<type>number</type>
+							<format>integer</format>
 							<size>10</size>
-							<eval>num</eval>
-							<default>2px</default>
-							<eval>required</eval>
+							<default>0</default>
+							<required>true</required>
 						</config>
 					</settings.BorderRadiusMap>
 					
