@@ -18,9 +18,6 @@ ExtensionUtility::configurePlugin(
     ]
 );
 
-// Page module hook for backend plugin display
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem']['Rtsimpleosm'] = 'SYRADEV\RtSimpleosm\Hooks\PageLayoutViewDrawItemHook';
-
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry']['1609276343'] = [
     'nodeName' => 'rtGPSCoordinates',
     'priority' => 40,

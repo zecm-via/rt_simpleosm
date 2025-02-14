@@ -1,57 +1,58 @@
-{namespace core = TYPO3\CMS\Core\ViewHelpers}
-<html lang="en" xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-core="true" data-namespace-typo3-fluid="true">
+<html lang="en" xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
     <div class="panel-body" style="{flex.background_style}">
-        <h3><core:icon identifier="{flex.plugin_icon}" size="default"/>&nbsp;{flex.plugin_title}</h3>
-        <h4><em>{flex.plugin_function}</em></h4>
-        <ul class="list-group" style="opacity: 0.85;">
-            <f:if condition="{flex.contents.selectAMapRecord}">
+        <div class="list-group" style="opacity: 0.85;">
+            <f:if condition="{flex.contents.markers}">
                 <f:then>
-                    <li class="list-group-item">
-                        <f:format.raw>{flex.contents.selectAMapRecord}</f:format.raw>
-                    </li>
+                    <div class="list-group-item">
+                        <h3><f:translate key="LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.mapRecord" /></h3>
+                        <ul class="list-group">
+                            <f:for each="{flex.contents.markers}" as="osm">
+                                <li class="list-group-item">
+                                    <h4><f:image src="{osm.icon}" width="15" alt="" />&nbsp;{osm.title} <code>[{osm.uid}]</code></h4>
+                                    <dl>
+                                        <f:for each="{osm.attributes}" as="value" key="label">
+                                            <dt><f:translate key="LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rtsimpleosm_domain_model_osm.{label}" /></dt>
+                                            <dd><f:format.raw>{value}</f:format.raw></dd>
+                                        </f:for>
+                                    </dl>
+                                </li>
+                            </f:for>
+                        </ul>
+                    </div>
+                    <div class="list-group-item">
+                        <h3><f:translate key="LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.sheet.styling" /></h3>
+                        <f:image width="85" height="85" src="EXT:rt_simpleosm/Resources/Public/maps/map_{flex.contents.mapStyle}.png" alt="" /><br />
+                        <strong><f:translate key="LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.mapStyle" /></strong>:
+                        <f:translate key="LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.mapStyle.{flex.contents.mapStyle}" />
+                    </div>
+                    <f:if condition="{flex.contents.styling}">
+                    <div class="list-group-item">
+                        <dl>
+                            <f:for each="{flex.contents.styling}" as="value" key="label">
+                                <dt><f:translate key="LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.{label}" /></dt>
+                                <dd>{value}</dd>
+                            </f:for>
+                        </dl>
+                    </div>
+                    </f:if>
+                    <div class="list-group-item">
+                        <h3><f:translate key="LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.sheet.options" /></h3>
+                        <dl>
+                            <f:for each="{flex.contents.options}" as="value" key="label">
+                                <dt><f:translate key="LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_db.xlf:tx_rt_simpleosm_sosm.{label}" /></dt>
+                                <dd>{value}</dd>
+                            </f:for>
+                        </dl>
+                    </div>
                 </f:then>
                 <f:else>
-                    <li class="list-group-item">
-                        <f:if condition="{flex.contents.noValidMapRecordSelected}">
-                            <f:then>
-                                <f:format.raw>{flex.contents.noValidMapRecordSelected}</f:format.raw>
-                            </f:then>
-                            <f:else>
-                                <ul class="list-group">
-                                    <f:for each="{flex.contents.markers}" as="osm">
-                                        <li class="list-group-item">
-                                            <img src="{osm.icon}" width="15" alt="osm">&nbsp;
-                                            <strong>{osm.title}</strong>&nbsp;[{osm.uid}]<br />
-                                            <f:format.raw>{osm.address}</f:format.raw>
-                                            <f:format.raw>{osm.latitude}</f:format.raw>
-                                            <f:format.raw>{osm.longitude}</f:format.raw>
-                                        </li>
-                                    </f:for>
-                                </ul>
-                            </f:else>
-                        </f:if>
-
-                    </li>
-                    <li class="list-group-item">
-                        <f:image width="85" height="85" src="{flex.contents.mapStyleImg}" alt="map_style" /><br />
-                        <f:format.raw>{flex.contents.mapStyleLabel}</f:format.raw>
-                    </li>
-                    <li class="list-group-item">
-                        <f:format.raw>{flex.contents.mapWidth}</f:format.raw>
-                        <f:format.raw>{flex.contents.mapHeight}</f:format.raw>
-                        <f:format.raw>{flex.contents.borderRadiusMap}</f:format.raw>
-                    </li>
-                    <li class="list-group-item">
-                        <f:format.raw>{flex.contents.zoom}</f:format.raw>
-                        <f:format.raw>{flex.contents.popupOptions}</f:format.raw>
-                        <f:format.raw>{flex.contents.scrollWheelZoom}</f:format.raw>
-                        <f:format.raw>{flex.contents.displayZoomButtons}</f:format.raw>
-                        <f:format.raw>{flex.contents.displayFullScreenButton}</f:format.raw>
-                        <f:format.raw>{flex.contents.displayMiniMap}</f:format.raw>
-                        <f:format.raw>{flex.contents.displayCaptionMenu}</f:format.raw>
-                    </li>
+                    <div class="list-group-item">
+                        <h3><core:icon identifier="actions-exclamation-triangle-alt" size="small" /> <f:format.raw><f:translate key="LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang.xlf:map.label.noValidMapRecordSelected" /></f:format.raw></h3>
+                    </div>
                 </f:else>
             </f:if>
-        </ul>
+        </div>
     </div>
 </html>

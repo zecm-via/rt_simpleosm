@@ -18,6 +18,8 @@ $pluginSignature = str_replace( '_', '', 'rt_simpleosm' ) . '_sosm';
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,select_key,pages,recursive';
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
 
+$GLOBALS['TCA']['tt_content']['types']['list']['previewRenderer']['rtsimpleosm_sosm'] = \SYRADEV\RtSimpleosm\Preview\OsmPreviewRenderer::class;
+
 $flexformXml = ExtensionManagementUtility::isLoaded('tt_address')
     ? 'FILE:EXT:rt_simpleosm/Configuration/FlexForms/flexform_simpleosm_tt_address.xml'
     : 'FILE:EXT:rt_simpleosm/Configuration/FlexForms/flexform_simpleosm.xml';
