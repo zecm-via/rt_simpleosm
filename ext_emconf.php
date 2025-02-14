@@ -22,7 +22,7 @@ $EM_CONF[$_EXTKEY] = [
         'depends' => [ 'typo3' => '12.4.0-12.4.99' ],
         'conflicts' => [],
         'suggests' => [
-	        'tt_address' => '4.0.0-5.99.99',
+            'tt_address' => '7.0.0-9.99.99',
         ],
     ],
 ];
