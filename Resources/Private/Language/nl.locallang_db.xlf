@@ -17,11 +17,11 @@
 			</trans-unit>
 			<trans-unit id="tx_rtsimpleosm_domain_model_osm.latitude">
 				<source>Map latitude</source>
-				<target>Breedtegraad kaart</target>
+				<target>Breedtegraad kaart ("latitude")</target>
 			</trans-unit>
 			<trans-unit id="tx_rtsimpleosm_domain_model_osm.longitude">
 				<source>Map longitude</source>
-				<target>Lengtegraad kaart</target>
+				<target>Lengtegraad kaart ("longitude")</target>
 			</trans-unit>
 			<trans-unit id="tx_rt_simpleosm_sosm.name">
 				<source>Simple OpenStreetMap</source>
