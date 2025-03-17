@@ -494,7 +494,7 @@ class OsmController extends ActionController {
 	 * @param $map Osm
 	 * @return string
 	 */
-	private function getPopupContent( Osm $map ) {
+	protected function getPopupContent( Osm $map ) {
 		if ( in_array($this->settings['PopupOptions'],['0','1']) ) {
 			return '';
 		}
