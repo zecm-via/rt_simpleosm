@@ -45,7 +45,14 @@ class OsmPreviewRenderer extends StandardContentPreviewRenderer
             return '';
         }
 
-        $flexform = $this->cleanUpArray(GeneralUtility::xml2array($row['pi_flexform']), ['data', 'lDEF', 'vDEF']);
+        $pi_flexform = GeneralUtility::xml2array($row['pi_flexform']);
+
+        // If parsing failed, return early with the error message
+        if (is_string($pi_flexform)){
+            return $pi_flexform;
+        }
+
+        $flexform = $this->cleanUpArray($pi_flexform, ['data', 'lDEF', 'vDEF']);
         $flex = [];
 
         // Get extension configuration
