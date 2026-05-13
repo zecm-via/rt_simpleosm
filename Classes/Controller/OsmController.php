@@ -66,7 +66,7 @@ class OsmController extends ActionController {
 		preg_match_all( '/tx_rtsimpleosm_domain_model_osm_(\d+),?/', $this->settings['MapRecord'], $mapRecords );
 
 		// Get all OSM Objects with those IDs
-		$markersOsm = array_map( [ $this->osmRepository, "findByUid" ], $mapRecords[1] );
+		$markersOsm = array_map( $this->osmRepository->findByUid(...), $mapRecords[1] );
 
 		$markersTtAddress = [];
 		if(ExtensionManagementUtility::isLoaded('tt_address')) {
