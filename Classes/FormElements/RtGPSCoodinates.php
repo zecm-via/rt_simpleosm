@@ -19,7 +19,7 @@ class RtGPSCoodinates extends AbstractFormElement {
 
 	public function render(): array
     {
-        $color     = ( isset( $this->data['parameterArray']['fieldConf']['config']['parameters']['color'] ) ) ? $this->data['parameterArray']['fieldConf']['config']['parameters']['color'] : '#9ed284';
+        $color     = $this->data['parameterArray']['fieldConf']['config']['parameters']['color'] ?? '#9ed284';
         $label1     = LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_be.xlf:simpleosm.message.getLatLong.text');
         $label2     = LocalizationUtility::translate( 'LLL:EXT:rt_simpleosm/Resources/Private/Language/locallang_be.xlf:simpleosm.message.getLatLong2.text');
         $formField = '<div style="padding: 15px; background-color: ' . $color . ';">';
