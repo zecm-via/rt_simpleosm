@@ -28,22 +28,10 @@ use SYRADEV\RtSimpleosm\Domain\Repository\OsmRepository;
  */
 class OsmController extends ActionController {
 
-	/**
-	 * Expose the pageRenderer
-	 *
-	 * @var $pageRenderer
-	 */
-	protected $pageRenderer;
-
-	/**
-	 * osmRepository
-	 * @var OsmRepository $osmRepository
-	 */
-	protected $osmRepository;
-
-	public function __construct(OsmRepository $osmRepository)
-	{
-		$this->osmRepository = $osmRepository;
+	public function __construct(
+        protected readonly OsmRepository $osmRepository,
+        protected readonly PageRenderer $pageRenderer
+    ) {
 	}
 
 	/**
@@ -73,9 +61,6 @@ class OsmController extends ActionController {
 		// Get current event plugin uid
 		$cObj = $this->request->getAttribute('currentContentObject');
 		$cUid = $cObj->data['uid'];
-
-		// Initiate the page renderer
-		$this->pageRenderer = GeneralUtility::makeInstance( PageRenderer::class );
 
 		// Get Osm records IDs
 		preg_match_all( '/tx_rtsimpleosm_domain_model_osm_(\d+),?/', $this->settings['MapRecord'], $mapRecords );

@@ -42,6 +42,13 @@ class OsmRepository extends Repository {
 	 * @var $ttAddress_table
 	 */
 	protected $ttAddress_table = 'tt_address';
+    /**
+     * Constructs a new Repository
+     */
+    public function __construct(private readonly \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool)
+    {
+        parent::__construct();
+    }
 
 	/**
 	 * function find by tt_address Uid
@@ -54,8 +61,7 @@ class OsmRepository extends Repository {
 
 
         // Database connection
-        $connectionPool   = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class );
-        $ttAddressQueryBuilder = $connectionPool->getQueryBuilderForTable( $this->ttAddress_table );
+        $ttAddressQueryBuilder = $this->connectionPool->getQueryBuilderForTable( $this->ttAddress_table );
         // Get OSM infos
         $selectedTtAddressMarkers = $ttAddressQueryBuilder
             ->select( 'uid', 'name', 'latitude', 'longitude', 'address', 'zip','city','country','markericon' )
