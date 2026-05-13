@@ -77,7 +77,7 @@ class OsmRepository extends Repository {
 			$Osm->setLongitude($TtAddressMarker['longitude']);
 			$Osm->setMarkericon($TtAddressMarker['markericon']);
 			$address = [$TtAddressMarker['address'], $TtAddressMarker['zip'] . ' ' . $TtAddressMarker['city'], $TtAddressMarker['country']];
-			$address = array_filter($address, function($a) {return $a !== "";});
+			$address = array_filter($address, fn($a) => $a !== "");
 			$Osm->setAddress( implode("\n", $address) );
             array_push($OsmTtAddresses, $Osm);
 		}

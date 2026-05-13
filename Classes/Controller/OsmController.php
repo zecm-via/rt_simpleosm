@@ -387,13 +387,11 @@ class OsmController extends ActionController {
 			}
 
 			// Add markers
-			$markers_data = array_map( function( Osm $map ) {
-				return '{   latlng: ['   . $map->getLatitude() . ',' . $map->getLongitude() . '], '.
+			$markers_data = array_map( fn(Osm $map) => '{   latlng: ['   . $map->getLatitude() . ',' . $map->getLongitude() . '], '.
 				            'popup: \''  . addslashes( $this->getPopupContent($map) ) . '\',' .
 				            'icon: \''   . PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$map->getMarkericon()]['icon'])) . '\',' .
 				            'shadow: \'' . PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($GLOBALS['TCA']['tx_rtsimpleosm_domain_model_osm']['columns']['markericon']['config']['items'][$map->getMarkericon()]['group'])) . '\'' .
-				       ' }';
-			}, $markers );
+				       ' }', $markers );
 			$leafletScript .= '
 				let markers_' . $cUid . '_data = [' . join( ',', $markers_data ) . '], group_' . $cUid . ' = new L.featureGroup([]), marker_' . $cUid . ', i_' . $cUid . '=0;
 				window[\'mapMarkers_' . $cUid . '\'] = [];
