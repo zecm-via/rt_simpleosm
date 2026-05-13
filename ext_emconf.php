@@ -19,7 +19,7 @@ $EM_CONF[$_EXTKEY] = [
     'state' => 'stable',
     'version' => '4.1.3',
     'constraints' => [
-        'depends' => [ 'typo3' => '12.4.0-12.4.99' ],
+        'depends' => [ 'typo3' => '13.4.0-13.4.99' ],
         'conflicts' => [],
         'suggests' => [
             'tt_address' => '7.0.0-9.99.99',

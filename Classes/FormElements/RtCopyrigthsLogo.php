@@ -18,7 +18,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class RtCopyrigthsLogo extends AbstractFormElement {
 
 
-	public function render() {
+	public function render(): array
+    {
 		$formField = '<div class="callout callout-warning">';
 		$formField .= '<div class="media"><div class="media-left"><img src="/typo3conf/ext/rt_simpleosm/Resources/Public/syradev.png" alt="SYRADEV"></div>';
 		$formField .= '<div class="media-body"><h4 class="callout-title">';

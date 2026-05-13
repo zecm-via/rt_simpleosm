@@ -160,7 +160,7 @@ class OsmPreviewRenderer extends StandardContentPreviewRenderer
 
         // HTML Template loading
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplatePathAndFilename($fluidTmplFilePath);
+        $view->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename($fluidTmplFilePath);
         $view->assign('flex', $flex);
 
         // Render final content
