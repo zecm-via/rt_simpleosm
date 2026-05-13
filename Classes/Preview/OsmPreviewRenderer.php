@@ -82,7 +82,7 @@ class OsmPreviewRenderer extends StandardContentPreviewRenderer
                 $mapRecords);
             $mapRecordIds = array_map('intval', $mapRecords[1]);
             // Get all OSM Objects with those IDs
-            $markersOsm = array_map(array($this->osmRepository, "findByUid"), $mapRecordIds);
+            $markersOsm = array_map([$this->osmRepository, "findByUid"], $mapRecordIds);
 
             $markersTtAddress = [];
             if (ExtensionManagementUtility::isLoaded('tt_address')) {
@@ -175,7 +175,7 @@ class OsmPreviewRenderer extends StandardContentPreviewRenderer
      */
     protected function cleanUpArray(array $cleanUpArray, array $notAllowed)
     {
-        $cleanArray = array();
+        $cleanArray = [];
         foreach ($cleanUpArray as $key => $value) {
             if (in_array($key, $notAllowed)) {
                 return is_array($value) ? $this->cleanUpArray($value, $notAllowed) : $value;
