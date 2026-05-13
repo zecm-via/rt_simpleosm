@@ -63,7 +63,7 @@ class OsmController extends ActionController {
 		$cUid = $cObj->data['uid'];
 
 		// Get Osm records IDs
-		preg_match_all( '/tx_rtsimpleosm_domain_model_osm_(\d+),?/', $this->settings['MapRecord'], $mapRecords );
+		preg_match_all( '/tx_rtsimpleosm_domain_model_osm_(\d+),?/', (string) $this->settings['MapRecord'], $mapRecords );
 
 		// Get all OSM Objects with those IDs
 		$markersOsm = array_map( $this->osmRepository->findByUid(...), $mapRecords[1] );
@@ -71,7 +71,7 @@ class OsmController extends ActionController {
 		$markersTtAddress = [];
 		if(ExtensionManagementUtility::isLoaded('tt_address')) {
 			// Get tt_address records IDs
-			preg_match_all( '/tt_address_(\d+),?/', $this->settings['MapRecord'], $ttAddressRecords );
+			preg_match_all( '/tt_address_(\d+),?/', (string) $this->settings['MapRecord'], $ttAddressRecords );
 			// Get all tt_address Objects with those IDs and convert them to Osm objects
 			$markersTtAddress = $this->osmRepository->findByTtAddressUid($ttAddressRecords[1]);
 		}

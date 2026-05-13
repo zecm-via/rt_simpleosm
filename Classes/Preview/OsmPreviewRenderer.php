@@ -78,7 +78,7 @@ class OsmPreviewRenderer extends StandardContentPreviewRenderer
 
         if (!empty($flexform['mapselection']['settings.MapRecord'])) {
             // Get Map records
-            preg_match_all('/tx_rtsimpleosm_domain_model_osm_(\d+),?/', $flexform['mapselection']['settings.MapRecord'],
+            preg_match_all('/tx_rtsimpleosm_domain_model_osm_(\d+),?/', (string) $flexform['mapselection']['settings.MapRecord'],
                 $mapRecords);
             $mapRecordIds = array_map(intval(...), $mapRecords[1]);
             // Get all OSM Objects with those IDs
@@ -87,7 +87,7 @@ class OsmPreviewRenderer extends StandardContentPreviewRenderer
             $markersTtAddress = [];
             if (ExtensionManagementUtility::isLoaded('tt_address')) {
                 // Get tt_address records IDs
-                preg_match_all('/tt_address_(\d+),?/', $flexform['mapselection']['settings.MapRecord'],
+                preg_match_all('/tt_address_(\d+),?/', (string) $flexform['mapselection']['settings.MapRecord'],
                     $ttAddressRecords);
                 // Get all tt_address Objects with those IDs
                 $markersTtAddress = $this->osmRepository->findByTtAddressUid($ttAddressRecords[1]);
