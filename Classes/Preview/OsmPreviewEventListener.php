@@ -5,51 +5,48 @@ declare(strict_types=1);
 namespace SYRADEV\RtSimpleosm\Preview;
 
 use SYRADEV\RtSimpleosm\Domain\Repository\OsmRepository;
-use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
-use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
+use TYPO3\CMS\Backend\View\Event\PageContentPreviewRenderingEvent;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Renderer to render preview widget of custom content elements in page module
- * @see \TYPO3\CMS\Backend\Preview\PreviewRendererInterface;
  */
-class OsmPreviewRenderer extends StandardContentPreviewRenderer
+readonly class OsmPreviewEventListener
 {
-    /**
-     * @var string $beosm_template Simple OSM backend template
-     */
-    private $beosm_template = 'EXT:rt_simpleosm/Resources/Private/Templates/Backend/Rtsimpleosm-Plugin-BackendTemplate.html';
-
-    /**
-     * osmRepository
-     * @var OsmRepository $osmRepository
-     */
-    protected $osmRepository;
-
-    public function __construct()
+    public function __construct(
+        protected ViewFactoryInterface $viewFactory,
+        protected OsmRepository $osmRepository,
+    )
     {
-        $this->osmRepository = GeneralUtility::makeInstance(OsmRepository::class);
     }
 
-    public function renderPageModulePreviewContent(GridColumnItem $item): string
+    #[AsEventListener]
+    public function __invoke(PageContentPreviewRenderingEvent $event): void
     {
-        $row = $item->getRecord();
+        $row = $event->getRecord();
 
-        // If no flexform data is provided, prevent to go further
-        if (!$row['pi_flexform']) {
-            return '';
+        // Check if this is the specific content element type
+        if ($event->getTable() !== 'tt_content'
+            || $event->getRecordType() !== 'list'
+            || $row['list_type'] !== 'rtsimpleosm_sosm'
+            || !$row['pi_flexform']
+        ) {
+            return;
         }
 
         $pi_flexform = GeneralUtility::xml2array($row['pi_flexform']);
 
         // If parsing failed, return early with the error message
         if (is_string($pi_flexform)){
-            return $pi_flexform;
+            $event->setPreviewContent($pi_flexform);
+            return;
         }
 
         $flexform = $this->cleanUpArray($pi_flexform, ['data', 'lDEF', 'vDEF']);
@@ -73,7 +70,6 @@ class OsmPreviewRenderer extends StandardContentPreviewRenderer
         //****************************
         // Plugin Simple OSM
         //****************************
-        $fluidTmplFilePath = GeneralUtility::getFileAbsFileName($this->beosm_template);
         $flex['contents']['markers'] = [];
 
         if (!empty($flexform['mapselection']['settings.MapRecord'])) {
@@ -159,12 +155,17 @@ class OsmPreviewRenderer extends StandardContentPreviewRenderer
         }
 
         // HTML Template loading
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename($fluidTmplFilePath);
+        $viewFactoryData = new ViewFactoryData(
+            templateRootPaths: ['EXT:rt_simpleosm/Resources/Private/Templates/Backend'],
+            layoutRootPaths: ['EXT:rt_simpleosm/Resources/Private/Layouts'],
+        );
+        $view = $this->viewFactory->create($viewFactoryData);
         $view->assign('flex', $flex);
 
         // Render final content
-        return $view->render();
+        $event->setPreviewContent(
+            $view->render('Rtsimpleosm-Plugin-BackendTemplate.html')
+        );
     }
 
     /**
@@ -179,10 +180,8 @@ class OsmPreviewRenderer extends StandardContentPreviewRenderer
         foreach ($cleanUpArray as $key => $value) {
             if (in_array($key, $notAllowed)) {
                 return is_array($value) ? $this->cleanUpArray($value, $notAllowed) : $value;
-            } else {
-                if (is_array($value)) {
-                    $cleanArray[$key] = $this->cleanUpArray($value, $notAllowed);
-                }
+            } elseif (is_array($value)) {
+                $cleanArray[$key] = $this->cleanUpArray($value, $notAllowed);
             }
         }
 
